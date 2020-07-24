@@ -11,14 +11,17 @@ BOT_NAME = 'start'
 
 SPIDER_MODULES = ['start.spiders']
 NEWSPIDER_MODULE = 'start.spiders'
+SPLASH_URL = 'http://192.168.192.173:8050'
+
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'start (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
-
+#是否遵循rebots协议
+#  ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
 
@@ -41,12 +44,34 @@ ROBOTSTXT_OBEY = True
 #   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
 #   'Accept-Language': 'en',
 #}
+#在settings中的DOWNLOADER_MIDDLEWARES 加上splash的中间件，并设置 HttpCompressionMiddleware 对象的优先级
+DOWNLOADER_MIDDLEWARES = {
+    'scrapy_splash.SplashCookiesMiddleware': 723,
+    'scrapy_splash.SplashMiddleware': 725,
+    'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 810,
+}
+
+
+
+
+
+
+
 
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
 #    'start.middlewares.StartSpiderMiddleware': 543,
 #}
+
+#. 在SPIDER_MIDDLEWARES 中安装splash的 SplashDeduplicateArgsMiddleware 中间件
+SPIDER_MIDDLEWARES = {
+    'scrapy_splash.SplashDeduplicateArgsMiddleware': 100,
+}
+
+
+
+
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
@@ -59,6 +84,16 @@ ROBOTSTXT_OBEY = True
 #EXTENSIONS = {
 #    'scrapy.extensions.telnet.TelnetConsole': None,
 #}
+
+
+#. 您还可以设置对应的过滤中间件——DUPEFILTER_CLASS
+DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'
+
+
+
+
+
+
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
@@ -86,3 +121,7 @@ ROBOTSTXT_OBEY = True
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+#. 您可以设置scrapy.contrib.httpcache.FilesystemCacheStorage 来使用Splash的HTTP缓存
+HTTPCACHE_STORAGE = 'scrapy_splash.SplashAwareFSCacheStorage'
+
