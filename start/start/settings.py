@@ -6,6 +6,19 @@
 #     https://docs.scrapy.org/en/latest/topics/settings.html
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+from random_user_agent.user_agent import UserAgent
+from random_user_agent.params import SoftwareName, OperatingSystem
+
+
+# you can also import SoftwareEngine, HardwareType, SoftwareType, Popularity from random_user_agent.params
+# you can also set number of user agents required by providing `limit` as parameter
+
+software_names = [SoftwareName.CHROME.value]
+operating_systems = [OperatingSystem.WINDOWS.value, OperatingSystem.LINUX.value]   
+
+user_agent_rotator = UserAgent(software_names=software_names, operating_systems=operating_systems, limit=100)
+
+
 
 BOT_NAME = 'start'
 
@@ -15,9 +28,27 @@ SPLASH_URL = 'http://192.168.192.173:8050'
 
 
 
+
+MONGO_URI = 'localhost'
+MONGO_DB = 'demo'
+# Configure item pipelines
+# See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
+ITEM_PIPELINES = {
+    'start.pipelines.MongoPipeline': 300,
+}
+
+
+
+
+
+
+
+
+
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'start (+http://www.yourdomain.com)'
-
+# Get Random User Agent String.
+USER_AGENT = user_agent_rotator.get_random_user_agent()
 # Obey robots.txt rules
 #是否遵循rebots协议
 #  ROBOTSTXT_OBEY = True
