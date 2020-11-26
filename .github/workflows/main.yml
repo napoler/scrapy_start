@@ -26,6 +26,7 @@ jobs:
       uses: actions/checkout@master
     - name: Build Hugo
       uses: lowply/build-hugo@v0.78.0
+    - name: Build
       run: cd docs_tools & hugo & cp ./.nojekyll ../docs
       #shell: sh
       
