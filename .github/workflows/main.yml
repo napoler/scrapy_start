@@ -23,6 +23,9 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     - name: Check out code
-      uses: actions/checkout@main
+      uses: actions/checkout@master
     - name: Build Hugo
       uses: lowply/build-hugo@v0.78.0
+      run: cd docs_tools & hugo & cp ./.nojekyll ../docs
+      #shell: sh
+      
