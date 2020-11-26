@@ -15,7 +15,8 @@ jobs:
         with:
           hugo-version: '0.61.0'
           # extended: true
-
+      - name: dir
+        working-directory: docs_tools
       - name: Build Hugo
         run: |
           hugo
